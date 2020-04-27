@@ -64,7 +64,6 @@ class GSM_TempRecord:
     
     
     def getobs(self, obs):
-        file_data = self.get_data()
         data = np.concatenate([self.unroll(row) for row in self.parsefile() if row[2] == obs])
 
         data['value'][data['value'] == -999.9] = np.nan
@@ -75,8 +74,8 @@ class GSM_TempRecord:
 def plot_min_max_temperature(url):
     
     NG_temp = GSM_TempRecord(url)
-    NGN_tmax = test.getobs('TMAX')
-    NGN_tmin = test.getobs('TMIN')
+    NGN_tmax = NG_temp.getobs('TMAX')
+    NGN_tmin = NG_temp.getobs('TMIN')
 
     data = pd.DataFrame(NGN_tmax)
     data.set_index('date', inplace=True)
