@@ -258,4 +258,25 @@ def combine_account(combined, relationship):
         df = df.append(row, ignore_index=True)
 
     return df
+
+# 03/04/2020
+def get_contact_difference(system_file, external_file, on):
+    """Takes two pd.dataframe objects and create complement file of external_file. That is data that is in
+    external_file and not in system_file
+
+    Args:
+        system_file (pd.dataframe): data that is present in the system
+        external_file (pd.dataframe): external file to be imported
+        on (list): columns to base the comparison on
+
+    Returns:
+        pd.dataframe: the difference data equivalent to B n A - A for set A and B
+    """
+
+    common_contacts = pd.merge(system_file[on], external_file, on=on) #Intersection
+    contacts_to_import = pd.concat(
+        [common_contacts, external_file], sort=False
+        ).drop_duplicates(keep=False) #Use intersection and original file to get the difference
+
+    return contacts_to_import
 #------------- end helpers -----------------------------------------------
